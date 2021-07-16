@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Stack API</title>
+</head>
+
+<body>
+    {% if error %}
+    <div class="container">
+        <h3 style="color:red" class="mt-2">{{error}}</h3>
+    </div>    
+        
+    {% else %}
+    <div>
+        <h2>Search Questions</h2>
+        <div class="container">
+            <form name="" method="GET">
+                <div class="col-sm-4">
+                    <label>Order</label>
+                    <div class="form-group">
+                        <select name='order' class="form-control">
+                            <option value='asc'>Ascending</option>
+                            <option value='desc'>Descending</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sort</label>
+
+                        <select name='sort' class="form-control">
+                            <option value='activity'>Activity</option>
+                            <option value='creation'>Creation</option>
+                            <option value='votes'>Votes</option>
+                            <option value='hot'>Hot</option>
+                            <option value='week'>Week</option>
+                            <option value='month'>Month</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label>Page</label>
+                        <input type="number" value="1" min='1' class="form-control" name='page' />
+                    </div>
+                    <div class="form-group">
+                        <label>Page Size</label>
+                        <input type="number" value="1" min='1' class="form-control" name='pagesize' />
+                    </div>
+                    <div class="form-group">
+                        <label>From Date</label>
+                        <input type="date" class="form-control" name='fromdate' />
+                    </div>
+                    <div class="form-group">
+                        <label>To Date</label>
+                        <input type="date" class="form-control" name='todate' />
+                    </div>
+                    <div class="form-group">
+                        <label>Tagged</label>
+                        <input type="text" class="form-control" name='tagged' />
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="submit" name='' value="Search" class="form-control" />
+                    </div>
+
+                </div>
+        </div>
+        </form>
+        <div class="container">
+
+
+        </div>
+    </div>
+    <div class="container">
+        <h3>Stack Overflow Question</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Questions</th>
+                    <th>View Count</th>
+                    <th>Answer Count</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for que in stack_question %}
+                <tr>
+                    <td>{{ que.question }}</td>
+                    <td>{{ que.view_count }}</td>
+                    <td>{{ que.answer_count }}</td>
+                    <td>{{ que.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        {% if stack_question.has_other_pages %}
+        <ul class="pagination">
+            {% if stack_question.has_previous %}
+            <li><a href="?page={{ stack_question.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in stack_question.paginator.page_range %}
+            {% if stack_question.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li><a href="?page={{ stack_question.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+
+</html>
